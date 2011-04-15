@@ -15,9 +15,10 @@ $steps->And('/^I parse the doc comment with the parser$/', function($world) {
 });
 
 $steps->Then(
-  '/^I should get "([^"]*)" when I ask for the doc comment description$/',
+  '/^when I ask for the doc comment description, I should get "([^"]*)"$/',
   function($world, $description) {
     assertEquals($description, $world->doc_comment_obj->getDescription());
   }
 );
+
 
