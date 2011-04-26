@@ -1,0 +1,30 @@
+# Taken from https://gist.github.com/287950
+
+# Prereqs:
+# * Ruby
+# * gem install watchr
+
+# Usage:
+# copy autounit to php project directory
+# run watchr autounit
+
+watch('tests/.*Test\.php') do |md|
+  puts "\e[H\e[2J"  #clear console
+  system("phpunit #{md[0]}")
+end
+
+watch('tests/.*\.php') do |md|
+  puts "\e[H\e[2J"  #clear console
+  system("phpunit tests")
+end
+
+watch('src/(.*)\.php') do |md|   # runs tests/ClassTest* whenever src/Class.php is changed
+  puts "\e[H\e[2J"  #clear console
+  testpath = 'tests/' + md[1].sub(/./) { |s| s.upcase } + 'Test.php'
+  if (File.exist?(testpath))
+    system("phpunit #{testpath}")
+  else
+    # puts "No unit test found for #{md[0]}"
+    system("phpunit tests")
+  end
+end
