@@ -146,6 +146,14 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
         ),
         'bar', "Another tag"
       ),
+      array(
+        $this->multiline(
+          '/**',
+          ' * @foo(some text inside brackets)',
+          ' */'
+        ),
+        'foo', "(some text inside brackets)"
+      ),
     );
   }
   

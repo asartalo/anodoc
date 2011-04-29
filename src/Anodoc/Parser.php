@@ -7,7 +7,6 @@ class Parser {
   function parse($doc_comment) {
     $lines = preg_split('/\s*\n\s*/', $doc_comment);
     array_walk($lines, array($this, 'cleanupLine'));
-    $this->trimLines($lines);
     $description = $this->getDescription($lines);
     $tags = $this->getTags($lines);
     return new DocComment(trim($description), $tags);
@@ -15,10 +14,6 @@ class Parser {
   
   function cleanupLine(&$line) {
     $line = trim(str_replace(array('/', '*'), '', $line));
-  }
-  
-  function trimLines($lines) {
-    
   }
   
   private function getDescription(&$lines) {
