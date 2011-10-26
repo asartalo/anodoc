@@ -6,20 +6,20 @@ use Anodoc\Parser;
 use Anodoc\DocComment;
 
 class ParserTest extends \PHPUnit_Framework_TestCase {
-  
+
   function setUp() {
     $this->parser = new Parser;
   }
-  
+
   function multiline() {
     $lines = func_get_args();
     return implode("\n", $lines);
   }
-  
+
   function testParserReturnsAnInstanceOfDocComment() {
     $this->assertInstanceOf('Anodoc\DocComment', $this->parser->parse(''));
   }
-  
+
   /**
    * @dataProvider dataParsesDescriptionOutOfDocComments
    */
@@ -28,7 +28,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       $description, $this->parser->parse($doc_comment)->getDescription()
     );
   }
-  
+
   function dataParsesDescriptionOutOfDocComments() {
     return array(
       array(
@@ -39,7 +39,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
         ),
         "This is my description"
       ),
-      
+
+      array(
+        $this->multiline(
+          '/**',
+          '* This is my description',
+          '*/'
+        ),
+        "This is my description"
+      ),
+
       array(
         $this->multiline(
           '/**',
@@ -67,7 +76,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       ),
     );
   }
-  
+
   /**
    * @dataProvider dataParsesTagOutOfDocComments
    */
@@ -76,7 +85,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       $value, $this->parser->parse($doc_comment)->getTag($tag)
     );
   }
-  
+
   function dataParsesTagOutOfDocComments() {
     return array(
       array(
@@ -156,6 +165,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       ),
     );
   }
-  
+
 }
 

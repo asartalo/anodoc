@@ -5,17 +5,21 @@ namespace Anodoc;
 class Parser {
 
   function parse($doc_comment) {
-    $lines = preg_split('/\s*\n\s*/', $doc_comment);
-    array_walk($lines, array($this, 'cleanupLine'));
+    $doc_comment = $this->cleanupLines($doc_comment);
+    $lines = $this->getLines($doc_comment);
     $description = $this->getDescription($lines);
     $tags = $this->getTags($lines);
     return new DocComment(trim($description), $tags);
   }
-  
-  function cleanupLine(&$line) {
-    $line = trim(str_replace(array('/', '*'), '', $line));
+
+  public function getLines($doc_comment) {
+    return ($lines = preg_split('/\s*\n\s*/', $doc_comment)) ? $lines : array();
   }
-  
+
+  private function cleanupLines($str) {
+    return preg_replace(array('/^\/\**/', '/\n[\/\* ]+\**/'), array('', "\n"), $str);
+  }
+
   private function getDescription(&$lines) {
     $description = '';
     while (is_string($line = array_shift($lines)) && !$this->startsWithTag($line)) {
@@ -24,7 +28,7 @@ class Parser {
     array_unshift($lines, $line);
     return $description;
   }
-  
+
   private function getTags($lines) {
     $tags = array();
     $tag_found = false;
@@ -43,7 +47,7 @@ class Parser {
     }
     return $tags;
   }
-  
+
   function startsWithTag($line) {
     return preg_match('/^@\w/', $line);
   }
