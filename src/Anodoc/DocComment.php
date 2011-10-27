@@ -5,7 +5,7 @@ namespace Anodoc;
 class DocComment {
 
   private $description, $tags;
-  
+
   function __construct($description = '', array $tags = array()) {
     $this->description = $description;
     $this->parseTags($tags);
@@ -14,13 +14,28 @@ class DocComment {
   function getDescription() {
     return $this->description;
   }
-  
+
+  function getShortDescription() {
+    if (preg_match('/^(.+)\n/', $this->description, $matches)) {
+      return $matches[1];
+    }
+    return $this->description;
+  }
+
+  function getLongDescription() {
+    if (
+      $longDescription = preg_replace('/^.+\n/', '', $this->description)
+    ) {
+      return $longDescription != $this->description ? trim($longDescription) : '';
+    }
+  }
+
   function getTag($tag) {
     if (isset($this->tags[$tag])) {
       return $this->tags[$tag];
     }
   }
-  
+
   private function parseTags(array $tags) {
     foreach ($tags as $tag => $value) {
       if (preg_match('/^(\(.+\))/', $value, $match)) {
@@ -30,7 +45,7 @@ class DocComment {
       }
     }
   }
-  
+
   private function parseParentheticalValue($str) {
     preg_match_all('/(\w+)="([^"]+)"/', $str, $matches);
     if (count($matches[0]) > 0) {
