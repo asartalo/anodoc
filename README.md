@@ -1,7 +1,7 @@
 Anodoc
 ======
 
-Anodoc is a doc comment parser written in PHP. Doc comments are usually written in the style
+Anodoc is a doc comment / doc block / parser written in PHP. Doc comments are usually written in the style
 
 ```php
 <?php
@@ -20,17 +20,4 @@ and are created to document source code.
 TODO
 ----
 
-Parse summaries with description. e.g.:
-
-```php
-<?php
-/**
- * This is the summary
- *
- * This is the longer description that most often
- * spans multiple lines.
- *
- * @param tag
- */
-?>
-```
+Class Doc parsing
