@@ -4,6 +4,7 @@ namespace Anodoc\Tests\Unit;
 
 use Anodoc\ClassDoc;
 use Anodoc\DocComment;
+use Anodoc\NullDocComment;
 
 class ClassDocTest extends \PHPUnit_Framework_TestCase {
 
@@ -27,12 +28,12 @@ class ClassDocTest extends \PHPUnit_Framework_TestCase {
   }
 
   function testGettingClassDocReturnsDocComment() {
-    $this->assertInstanceOf('Anodoc\DocComment', $this->docCollection->getClassDoc());
+    $this->assertInstanceOf('Anodoc\DocComment', $this->docCollection->getMainDoc());
   }
 
   function testGettingClassDocReturnsCorrectDocComment() {
     $this->assertEquals(
-      'Foo Bar', $this->docCollection->getClassDoc()->getDescription()
+      'Foo Bar', $this->docCollection->getMainDoc()->getDescription()
     );
   }
 
@@ -43,16 +44,33 @@ class ClassDocTest extends \PHPUnit_Framework_TestCase {
     );
   }
 
-  function testGettingMethodDocForUnknownMethodReturnsNull() {
-    $this->assertSame(
-      null, $this->docCollection->getMethodDoc('fooMethod')
+  function testGettingMethodDocForUnknownMethodReturnsNullDoc() {
+    $this->assertEquals(
+      new NullDocComment, $this->docCollection->getMethodDoc('fooMethod')
     );
   }
 
-
   function testAddingNonDocCommentAsMethodDocThrowsException() {
     $this->setExpectedException('Anodoc\ClassDoc\InvalidMethodDoc');
-    new ClassDoc('Foo', new DocComment, array('foo', 'b'));
+    new ClassDoc('Foo', new DocComment, array('foo' => 'b'));
+  }
+
+  function testGettingAttributeDoc() {
+    $this->assertEquals(
+      'attribute1 description',
+      $this->docCollection->getAttributeDoc('attribute1')->getDescription()
+    );
+  }
+
+  function testGettingAttributeDocForUnknownAttributeReturnsNull() {
+    $this->assertEquals(
+      new NullDocComment, $this->docCollection->getAttributeDoc('bar')
+    );
+  }
+
+  function testAddingNonDocCommentAsAttributeDocThrowsException() {
+    $this->setExpectedException('Anodoc\ClassDoc\InvalidAttributeDoc');
+    new ClassDoc('Foo', new DocComment, array(), array('foo' => 'b'));
   }
 
 }

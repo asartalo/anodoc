@@ -14,7 +14,7 @@ namespace Anodoc\Tests;
 
 
 /**
- * Dummy class for functioanl tests
+ * Dummy class for functional tests
  *
  * This dummy class is used in ClassDocSample
  * and can also be used anywhere you want.
@@ -30,7 +30,7 @@ class ClassDocSample {
   private $var;
 
   /**
-   * A private variable named $bar;
+   * A private variable named $bar
    */
   private $bar;
 
