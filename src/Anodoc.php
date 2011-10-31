@@ -1,12 +1,12 @@
 <?php
 
-use Anodoc\ClassDocCollection;
+use Anodoc\ClassDoc;
 use Anodoc\DocComment;
 
 class Anodoc {
 
   function getDoc() {
-    return new ClassDocCollection('', new DocComment);
+    return new ClassDoc('', new DocComment);
   }
 
 }

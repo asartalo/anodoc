@@ -2,13 +2,13 @@
 
 namespace Anodoc\Tests\Unit;
 
-use Anodoc\ClassDocCollection;
+use Anodoc\ClassDoc;
 use Anodoc\DocComment;
 
-class ClassDocCollectionTest extends \PHPUnit_Framework_TestCase {
+class ClassDocTest extends \PHPUnit_Framework_TestCase {
 
   function setUp() {
-    $this->docCollection = new ClassDocCollection(
+    $this->docCollection = new ClassDoc(
       'FooClass',
       new DocComment('Foo Bar'),
       array(
@@ -51,8 +51,8 @@ class ClassDocCollectionTest extends \PHPUnit_Framework_TestCase {
 
 
   function testAddingNonDocCommentAsMethodDocThrowsException() {
-    $this->setExpectedException('Anodoc\ClassDocCollection\InvalidMethodDoc');
-    new ClassDocCollection('Foo', new DocComment, array('foo', 'b'));
+    $this->setExpectedException('Anodoc\ClassDoc\InvalidMethodDoc');
+    new ClassDoc('Foo', new DocComment, array('foo', 'b'));
   }
 
 }

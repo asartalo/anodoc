@@ -1,6 +1,6 @@
 <?php
 
-namespace Anodoc\ClassDocCollection;
+namespace Anodoc\ClassDoc;
 
 use Anodoc\Exception;
 

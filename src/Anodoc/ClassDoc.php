@@ -2,9 +2,9 @@
 
 namespace Anodoc;
 
-use Anodoc\ClassDocCollection\InvalidMethodDoc;
+use Anodoc\ClassDoc\InvalidMethodDoc;
 
-class ClassDocCollection {
+class ClassDoc {
 
   private
     $className,
