@@ -1,0 +1,3 @@
+[submodule "vendor/AsarClassLoader"]
+	path = vendor/AsarClassLoader
+	url = git://github.com/asartalo/AsarClassLoader.git

@@ -1,8 +1,8 @@
 <?php
 $src_path = realpath(__DIR__ . '/..') . '/src/';
-require_once $src_path . 'SplClassLoader.php';
-$classLoader = new SplClassLoader('Anodoc\Tests', __DIR__);
+require_once realpath(__DIR__ . '/../') . '/vendor/AsarClassLoader/src/Asar/ClassLoader.php';
+$classLoader = new \Asar\ClassLoader('Anodoc\Tests', __DIR__);
 $classLoader->register();
-$classLoader = new SplClassLoader('Anodoc', $src_path);
+$classLoader = new \Asar\ClassLoader('Anodoc', $src_path);
 $classLoader->register();
 
