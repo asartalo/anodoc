@@ -38,7 +38,7 @@ class DocComment {
 
   private function parseTags(array $tags) {
     foreach ($tags as $tag => $value) {
-      if (preg_match('/^(\(.+\))/', $value, $match)) {
+      if (is_string($value) && preg_match('/^(\(.+\))/', $value, $match)) {
         $this->tags[$tag] = $this->parseParentheticalValue($match[1]);
       } else {
         $this->tags[$tag]= $value;

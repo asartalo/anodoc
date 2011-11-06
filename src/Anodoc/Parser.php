@@ -8,8 +8,7 @@ class Parser {
     $doc_comment = $this->cleanupLines($doc_comment);
     $lines = $this->getLines($doc_comment);
     $description = $this->getDescription($lines);
-    $tags = $this->getTags($lines);
-    return new DocComment(trim($description), $tags);
+    return new DocComment(trim($description), $this->getTags($lines));
   }
 
   public function getLines($doc_comment) {
@@ -33,16 +32,21 @@ class Parser {
     $tags = array();
     $tag_found = false;
     foreach ($lines as $line) {
-      if (trim($line) == '') {
+      $line = trim($line);
+      if (empty($line)) {
         continue;
       }
-      if ($tag_found && !$this->startsWithTag($line)) {
-        $tags[$current_key] .= "\n" . trim($line);
-      }
       if (preg_match('/^@(\w+)\s*(.*)$/', $line, $line_parsed)) {
-        $current_key = $line_parsed[1];
-        $tags[$current_key] = $line_parsed[2];
+        $current_tag = $line_parsed[1];
+        if (!isset($tags[$current_tag])) {
+          $tags[$current_tag] = array();
+        }
+        $tags[$current_tag][] = $line_parsed[2];
         $tag_found = true;
+      } elseif ($tag_found) {
+        $tag_value = array_pop($tags[$current_tag]);
+        $tags[$current_tag][] .= $tag_value . "\n" . $line;
+
       }
     }
     return $tags;

@@ -94,7 +94,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' * @foo Foo Bar',
           ' */'
         ),
-        'foo', 'Foo Bar'
+        'foo', array('Foo Bar')
       ),
       array(
         $this->multiline(
@@ -102,7 +102,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' *  @bar   Some tag value with none trimmed spaces    ',
           ' */'
         ),
-        'bar', 'Some tag value with none trimmed spaces'
+        'bar', array('Some tag value with none trimmed spaces')
       ),
       array(
         $this->multiline(
@@ -111,7 +111,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' *       multiple lines for tag',
           ' */'
         ),
-        'baz2', "Some text that spans\nmultiple lines for tag"
+        'baz2', array("Some text that spans\nmultiple lines for tag")
       ),
       array(
         $this->multiline(
@@ -121,7 +121,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' *          and goes on and on',
           ' */'
         ),
-        'foo_tag', "Another text that spans\nmultiple lines\nand goes on and on"
+        'foo_tag', array("Another text that spans\nmultiple lines\nand goes on and on")
       ),
       array(
         $this->multiline(
@@ -131,7 +131,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' * @bar Another tag',
           ' */'
         ),
-        'foo', "Some text that spans\nmultiple lines"
+        'foo', array("Some text that spans\nmultiple lines")
       ),
       array(
         $this->multiline(
@@ -139,9 +139,11 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' * @foo Some text that spans',
           ' *      multiple lines',
           ' * @bar Another tag',
+          ' * @baz Some text that spans',
+          ' *      multiple lines',
           ' */'
         ),
-        'bar', "Another tag"
+        'baz', array("Some text that spans\nmultiple lines")
       ),
       array(
         $this->multiline(
@@ -150,10 +152,11 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' * ',
           ' * @foo Some text that spans',
           ' *      multiple lines',
-          ' * @bar Another tag',
+          ' * @bar Another text that spans',
+          ' *      multiple lines',
           ' */'
         ),
-        'bar', "Another tag"
+        'bar', array("Another text that spans\nmultiple lines")
       ),
       array(
         $this->multiline(
@@ -161,7 +164,28 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' * @foo(some text inside brackets)',
           ' */'
         ),
-        'foo', "(some text inside brackets)"
+        'foo', array("(some text inside brackets)")
+      ),
+      array(
+        $this->multiline(
+          '/**',
+          ' * @foo some value',
+          ' * @foo another value',
+          ' * @foo yet another',
+          ' */'
+        ),
+        'foo', array('some value', 'another value', 'yet another')
+      ),
+      array(
+        $this->multiline(
+          '/**',
+          ' * @foo some value',
+          ' * @foo another value',
+          ' *      but it is multiline',
+          ' * @foo yet another',
+          ' */'
+        ),
+        'foo', array('some value', "another value\nbut it is multiline", 'yet another')
       ),
     );
   }
