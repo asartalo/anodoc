@@ -2,13 +2,14 @@
 
 namespace Anodoc\Tests\Functional;
 
+use Anodoc;
 use Anodoc\Parser;
 use Anodoc\DocComment;
 
 class CommonUseCaseTest extends \PHPUnit_Framework_TestCase {
 
   function setUp() {
-    $this->anodoc = new \Anodoc;
+    $this->anodoc = Anodoc::getNew();
   }
 
   function testGettingClassDoc() {
@@ -36,6 +37,15 @@ class CommonUseCaseTest extends \PHPUnit_Framework_TestCase {
       "And this is a long description for this\npublic method.",
       $methodDoc->getLongDescription()
     );
+  }
+
+  function testRegisteringATagRegistersThroughParser() {
+    $parser = $this->getMock('Anodoc\Parser', array('registerTag'));
+    $anodoc = new Anodoc($parser);
+    $parser->expects($this->once())
+      ->method('registerTag')
+      ->with('foo', 'FooTagClass');
+    $anodoc->registerTag('foo', 'FooTagClass');
   }
 
 }

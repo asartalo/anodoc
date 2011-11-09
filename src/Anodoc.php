@@ -7,8 +7,14 @@ use Anodoc\RawDocRetriever;
 
 class Anodoc {
 
-  function __construct() {
-    $this->parser = new Parser;
+  private $parser;
+
+  function __construct(Parser $parser) {
+    $this->parser = $parser;
+  }
+
+  static function getNew() {
+    return new self(new Parser);
   }
 
   function getDoc($class) {
@@ -26,6 +32,10 @@ class Anodoc {
       $docs[$name] = $this->parser->parse($doc);
     }
     return $docs;
+  }
+
+  function registerTag($tag_name, $tag_class) {
+    $this->parser->registerTag($tag_name, $tag_class);
   }
 
 }
