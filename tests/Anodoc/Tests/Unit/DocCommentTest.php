@@ -3,6 +3,7 @@
 namespace Anodoc\Tests\Unit;
 
 use Anodoc\DocComment;
+use Anodoc\Collection;
 
 class DocCommentTest extends \PHPUnit_Framework_TestCase {
 
@@ -17,6 +18,7 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
    * @dataProvider dataSettingTags
    */
   function testSettingTags($tags, $tag, $expected_value) {
+    $tags = new Collection($tags);
     $doc = new DocComment('', $tags);
     $this->assertEquals($expected_value, $doc->getTag($tag));
   }

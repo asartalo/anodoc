@@ -77,12 +77,24 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
     );
   }
 
+  function testParsesGenericTagOutOfDocCommentsByDefault() {
+    $doc_comment = $this->multiline(
+      '/**',
+      ' * @foo Foo Bar',
+      ' */'
+    );
+    $this->assertInstanceOf(
+      'Anodoc\Tags\GenericTag',
+      $this->parser->parse($doc_comment)->getTag('foo')->get(0)
+    );
+  }
+
   /**
    * @dataProvider dataParsesTagOutOfDocComments
    */
   function testParsesTagOutOfDocComments($doc_comment, $tag, $value) {
     $this->assertEquals(
-      $value, $this->parser->parse($doc_comment)->getTag($tag)
+      $value, $this->parser->parse($doc_comment)->getTag($tag)->get(0)->getValue()
     );
   }
 
@@ -94,7 +106,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' * @foo Foo Bar',
           ' */'
         ),
-        'foo', array('Foo Bar')
+        'foo', 'Foo Bar'
       ),
       array(
         $this->multiline(
@@ -102,7 +114,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' *  @bar   Some tag value with none trimmed spaces    ',
           ' */'
         ),
-        'bar', array('Some tag value with none trimmed spaces')
+        'bar', 'Some tag value with none trimmed spaces'
       ),
       array(
         $this->multiline(
@@ -111,7 +123,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' *       multiple lines for tag',
           ' */'
         ),
-        'baz2', array("Some text that spans\nmultiple lines for tag")
+        'baz2', "Some text that spans\nmultiple lines for tag"
       ),
       array(
         $this->multiline(
@@ -121,7 +133,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' *          and goes on and on',
           ' */'
         ),
-        'foo_tag', array("Another text that spans\nmultiple lines\nand goes on and on")
+        'foo_tag', "Another text that spans\nmultiple lines\nand goes on and on"
       ),
       array(
         $this->multiline(
@@ -131,7 +143,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' * @bar Another tag',
           ' */'
         ),
-        'foo', array("Some text that spans\nmultiple lines")
+        'foo', "Some text that spans\nmultiple lines"
       ),
       array(
         $this->multiline(
@@ -143,7 +155,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' *      multiple lines',
           ' */'
         ),
-        'baz', array("Some text that spans\nmultiple lines")
+        'baz', "Some text that spans\nmultiple lines"
       ),
       array(
         $this->multiline(
@@ -156,7 +168,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' *      multiple lines',
           ' */'
         ),
-        'bar', array("Another text that spans\nmultiple lines")
+        'bar', "Another text that spans\nmultiple lines"
       ),
       array(
         $this->multiline(
@@ -164,8 +176,25 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' * @foo(some text inside brackets)',
           ' */'
         ),
-        'foo', array("(some text inside brackets)")
+        'foo', "(some text inside brackets)"
       ),
+
+    );
+  }
+
+  /**
+   * @dataProvider dataTagsWithMultipleValues
+   */
+  function testTagsWithMultipleValues($doc_comment, $tag, $values) {
+    foreach ($values as $key => $value) {
+      $this->assertEquals(
+        $value, $this->parser->parse($doc_comment)->getTag($tag)->get($key)->getValue()
+      );
+    }
+  }
+
+  function dataTagsWithMultipleValues() {
+    return array(
       array(
         $this->multiline(
           '/**',
@@ -190,5 +219,18 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
     );
   }
 
-}
+  function testRegisteringATag() {
+    $doc_comment = $this->multiline(
+      '/**',
+      ' * @foo Foo Bar',
+      ' * @param string $varname the description',
+      ' */'
+      );
+    $this->parser->registerTag('param', 'Anodoc\Tags\ParamTag');
+    $this->assertInstanceOf(
+      'Anodoc\Tags\ParamTag',
+      $this->parser->parse($doc_comment)->getTag('param')->get(0)
+    );
+  }
 
+}

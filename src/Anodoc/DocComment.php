@@ -6,7 +6,10 @@ class DocComment {
 
   private $description, $tags;
 
-  function __construct($description = '', array $tags = array()) {
+  function __construct($description = '', Collection $tags = null) {
+    if (!$tags) {
+      $tags = new Collection;
+    }
     $this->description = $description;
     $this->parseTags($tags);
   }
@@ -36,7 +39,7 @@ class DocComment {
     }
   }
 
-  private function parseTags(array $tags) {
+  private function parseTags(Collection $tags) {
     foreach ($tags as $tag => $value) {
       if (is_string($value) && preg_match('/^(\(.+\))/', $value, $match)) {
         $this->tags[$tag] = $this->parseParentheticalValue($match[1]);

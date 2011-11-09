@@ -4,6 +4,8 @@ namespace Anodoc;
 
 class Parser {
 
+  private $registered_tags = array();
+
   function parse($doc_comment) {
     $doc_comment = $this->cleanupLines($doc_comment);
     $lines = $this->getLines($doc_comment);
@@ -28,7 +30,30 @@ class Parser {
     return $description;
   }
 
+  function registerTag($tag_name, $tag_class) {
+    $this->registered_tags[$tag_name] = $tag_class;
+  }
+
   private function getTags($lines) {
+    $raw_tags = $this->getTagsRaw($lines);
+    $tags = new Collection;
+    foreach ($raw_tags as $tag_name => $values) {
+      if (!$tags->isKeySet($tag_name)) {
+        $tags[$tag_name] = new Collection;
+      }
+      foreach ($values as $value) {
+        if (isset($this->registered_tags[$tag_name])) {
+          $tag_class = $this->registered_tags[$tag_name];
+        } else {
+          $tag_class = 'Anodoc\Tags\GenericTag';
+        }
+        $tags[$tag_name][] = new $tag_class($tag_name, $value);
+      }
+    }
+    return $tags;
+  }
+
+  private function getTagsRaw($lines) {
     $tags = array();
     $tag_found = false;
     foreach ($lines as $line) {
