@@ -155,3 +155,8 @@ $classDoc->getMethodDoc('fooMethod')->getTag('param');
 
 ?>
 ```
+
+Limitations
+-----------
+
+Anodoc doesn't parse inline tags as of the moment.
