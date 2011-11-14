@@ -8,9 +8,9 @@ http://pear.php.net/dtd/package-2.0
 http://pear.php.net/dtd/package-2.0.xsd">
 <name>Anodoc</name>
 <channel>pear.brainchildprojects.org</channel>
-<summary>Anodoc.</summary>
+<summary>Easy doc comment parser for PHP</summary>
 <description>
-Anodoc is a doc comment / doc block / parser written in PHP
+Anodoc is a doc comment / doc block / parser written for PHP
 </description>
 <lead>
   <name>Wayne Duran</name>
