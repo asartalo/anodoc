@@ -38,4 +38,15 @@ class Anodoc {
     $this->parser->registerTag($tag_name, $tag_class);
   }
 
+  /**
+   * Used for easier classloading
+   *
+   * e.g.:
+   * require_once 'Anodoc.php';
+   * $classLoader->register('Anodoc', Anodoc::getSourceLocation());
+   */
+  static function getSourceLocation() {
+    return __DIR__;
+  }
+
 }

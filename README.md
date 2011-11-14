@@ -75,7 +75,9 @@ using Anodoc
 ```php
 <?php
 
-$anodoc = new Anodoc;
+// Factry instantiates a new Anodoc object
+// With a Parser
+$anodoc = Anodoc::getNew();
 
 $classDoc = $anodoc->getDoc('FooClass');
 
@@ -144,7 +146,7 @@ yourself to be useful.
 ```php
 <?php
 
-$anodoc = new Anodoc;
+$anodoc = Anodoc::getNew();
 $anodoc->register('param', 'Anodoc\Tags\ParamTag');
 $classDoc = $anodoc->getDoc('FooClass');
 
