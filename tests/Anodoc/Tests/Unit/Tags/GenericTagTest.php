@@ -16,4 +16,9 @@ class GenericTagTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('bar', $tag->getTagName());
   }
 
+  function testToString() {
+    $tag = new GenericTag('bar', 'foo');
+    $this->assertEquals('foo', "$tag");
+  }
+
 }

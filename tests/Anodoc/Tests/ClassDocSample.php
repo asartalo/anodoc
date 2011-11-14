@@ -34,6 +34,8 @@ class ClassDocSample {
    */
   private $bar;
 
+  private $bbb; // Does not have a doc comment
+
   /**
    * This is a public method
    *

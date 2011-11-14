@@ -31,13 +31,13 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
   /**
    * //@dataProvider dataSettingTags
    */
-  function testGettingJustOneTag($tags, $tag, $expected_value) {
+  function testGettingJustOneTagValue($tags, $tag, $expected_value) {
     $tag_collections = new Collection;
     foreach ($tags as $tag => $value) {
       $tag_collections[$tag] = new TagCollection($tag, array(new GenericTag($tag, $value)));
     }
     $doc = new DocComment('', $tag_collections);
-    $this->assertEquals($expected_value, $doc->getTag($tag));
+    $this->assertEquals($expected_value, $doc->getTagValue($tag));
   }
 
   function dataSettingTags() {
@@ -65,7 +65,21 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
     );
 
     $doc = new DocComment('', $tag_collections);
-    $this->assertEquals('Foo 2', $doc->getTag('foo'));
+    $this->assertEquals('Foo 2', $doc->getTagValue('foo'));
+  }
+
+  function testGettingATagObject() {
+    $tag_collections = new Collection;
+    $tag_collections['foo'] = new TagCollection(
+      'foo',
+      array(
+        new GenericTag('foo', 'Foo 1'),
+        new GenericTag('foo', 'Foo 2')
+      )
+    );
+
+    $doc = new DocComment('', $tag_collections);
+    $this->assertEquals(new GenericTag('foo', 'Foo 2'), $doc->getTag('foo'));
   }
 
   function testCheckingIfDocCommentHasTagReturnsFalseForUnsetTags() {

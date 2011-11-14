@@ -44,6 +44,12 @@ class DocComment {
 
   function getTag($tag) {
     if ($this->hasTag($tag)) {
+      return $this->tags[$tag][$this->tags[$tag]->count() -1];
+    }
+  }
+
+  function getTagValue($tag) {
+    if ($this->hasTag($tag)) {
       $last = $this->tags[$tag][$this->tags[$tag]->count() -1];
       return $last->getValue();
     }
@@ -55,9 +61,6 @@ class DocComment {
 
   private function parseTags(Collection $tags) {
     foreach ($tags as $tag => $value) {
-      // if (is_string($value) && preg_match('/^(\(.+\))/', $value, $match)) {
-      //   $this->tags[$tag] = $this->parseParentheticalValue($match[1]);
-      // } else {
       if ($value instanceof TagCollection) {
         $this->tags[$tag]= $value;
       } else {
@@ -68,17 +71,6 @@ class DocComment {
         }
         throw new Exception("Tag '$tag' of type $type is not a TagCollection\n");
       }
-      // }
     }
   }
-
-  /*
-  private function parseParentheticalValue($str) {
-    preg_match_all('/(\w+)="([^"]+)"/', $str, $matches);
-    if (count($matches[0]) > 0) {
-      return array_combine($matches[1], $matches[2]);
-    }
-    return $str;
-  }*/
-
 }

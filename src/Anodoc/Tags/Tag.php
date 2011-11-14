@@ -10,4 +10,6 @@ abstract class Tag {
 
   abstract function getTagName();
 
+  abstract function __toString();
+
 }

@@ -13,6 +13,7 @@ PHP. Doc comments are usually written in the style
  * what this section is all about.
  *
  * @param  foo bar
+ * @param  boo far
  * @return baz
  */
 ?>
@@ -41,6 +42,7 @@ $doc = $parser->parse(
 	" * what this section is all about.\n" .
 	" *\n" .
 	" * @param  foo bar\n" .
+	" * @param  boo far\n" .
 	" * @return baz\n" .
 	" */"
 );
@@ -52,11 +54,17 @@ echo $doc->getLongDescription();
 // And here's a longer description that explains in detail
 // what this section is all about.
 
-echo $doc->getTag('param');
-// foo bar
-
-echo $doc->getTag('return');
+echo $doc->getTagValue('return');
 // baz
+
+$doc->getTag('return');
+// A Tag object with value 'baz'
+
+echo $doc->getTagValue('param'); // this will return the last defined value
+// boo far
+
+var_dump($doc->getTags('param'));
+// a dump of a TagCollection that has 2 values
 
 ?>
 ```
@@ -82,22 +90,66 @@ $classDoc->getAttributeDoc('bar');
 ?>
 ```
 
-
-Limitations
+Custom Tags
 -----------
 
-Currently, Anodoc\DocComments can't parse multiple instances
-of a tag. So for example, if a method has multiple parameters,
-like:
+Anodoc does not define any syntactic customizations for
+tag values. By default, each value retrieved from the parser
+returns an instance of Anodoc\Tags\GenericTag. You can
+register a new Tag type by creating a class that extends
+the abstract class 'Anodoc\Tags\Tag' and registering it
+through the parser or Anodoc object. Then you can set your
+custom syntax there.
+
+For example, Anodoc comes with a custom tag for handling
+params named "Anodoc\Tags\ParamTag". The definition is:
 
 ```php
 <?php
-/**
- * A method with multiple parameters
- *
- * @param string $foo Foo parameter
- * @param string $bar Bar parameter
- */
- ?>
- ```
- the parser will only be able to parse the last param value
+
+namespace Anodoc\Tags;
+
+class ParamTag extends Tag {
+
+  private $tag_name, $value;
+
+  function __construct($tag_name, $value) {
+    preg_match('/(\w+)\s+\$(\w+)\s+(.+)/ms', $value, $matches);
+    $this->value = array(
+      'type' => $matches[1],
+      'name' => $matches[2],
+      'description' => $matches[3]
+    );
+    $this->tag_name = $tag_name;
+  }
+
+  function getValue() {
+    return $this->value;
+  }
+
+  function getTagName() {
+    return $this->tag_name;
+  }
+
+  function __toString() {
+    return (string) $this->value;
+  }
+
+}
+?>
+```
+This is not registered by default so you must register it
+yourself to be useful.
+
+```php
+<?php
+
+$anodoc = new Anodoc;
+$anodoc->register('param', 'Anodoc\Tags\ParamTag');
+$classDoc = $anodoc->getDoc('FooClass');
+
+$classDoc->getMethodDoc('fooMethod')->getTag('param');
+// returns an 'Anodoc\Tags\ParamTag' object
+
+?>
+```

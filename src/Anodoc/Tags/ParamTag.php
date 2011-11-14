@@ -24,4 +24,8 @@ class ParamTag extends Tag {
     return $this->tag_name;
   }
 
+  function __toString() {
+    return (string) $this->value;
+  }
+
 }
