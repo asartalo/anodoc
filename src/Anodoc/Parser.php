@@ -2,6 +2,9 @@
 
 namespace Anodoc;
 
+use Anodoc\Collection\Collection;
+use Anodoc\Collection\TagCollection;
+
 class Parser {
 
   private $registered_tags = array();
@@ -39,7 +42,7 @@ class Parser {
     $tags = new Collection;
     foreach ($raw_tags as $tag_name => $values) {
       if (!$tags->isKeySet($tag_name)) {
-        $tags[$tag_name] = new Collection;
+        $tags[$tag_name] = new TagCollection($tag_name);
       }
       foreach ($values as $value) {
         if (isset($this->registered_tags[$tag_name])) {

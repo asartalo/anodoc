@@ -2,7 +2,7 @@
 
 namespace Anodoc\Tests\Unit;
 
-use Anodoc\Collection;
+use Anodoc\Collection\Collection;
 
 class CollectionTest extends \PHPUnit_Framework_TestCase {
 

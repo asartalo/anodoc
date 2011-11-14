@@ -3,7 +3,9 @@
 namespace Anodoc\Tests\Unit;
 
 use Anodoc\DocComment;
-use Anodoc\Collection;
+use Anodoc\Collection\Collection;
+use Anodoc\Collection\TagCollection;
+use Anodoc\Tags\GenericTag;
 
 class DocCommentTest extends \PHPUnit_Framework_TestCase {
 
@@ -17,26 +19,33 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
   /**
    * @dataProvider dataSettingTags
    */
-  function testSettingTags($tags, $tag, $expected_value) {
-    $tags = new Collection($tags);
-    $doc = new DocComment('', $tags);
+  function testSettingAndGettingTags($tags, $tag, $expected_value) {
+    $tag_collections = new Collection;
+    foreach ($tags as $tag => $value) {
+      $tag_collections[$tag] = new TagCollection($tag, array(new GenericTag($tag, $value)));
+    }
+    $doc = new DocComment('', $tag_collections);
+    $this->assertEquals($expected_value, $doc->getTags($tag)->get(0)->getValue());
+  }
+
+  /**
+   * //@dataProvider dataSettingTags
+   */
+  function testGettingJustOneTag($tags, $tag, $expected_value) {
+    $tag_collections = new Collection;
+    foreach ($tags as $tag => $value) {
+      $tag_collections[$tag] = new TagCollection($tag, array(new GenericTag($tag, $value)));
+    }
+    $doc = new DocComment('', $tag_collections);
     $this->assertEquals($expected_value, $doc->getTag($tag));
   }
 
   function dataSettingTags() {
     return array(
-      array(array('foo' => 'Foo string.'), 'foo', 'Foo string.'),
       array(
-        array('foo' => '(baz="Some string here")'), 'foo',
-        array('baz' => "Some string here")
-      ),
-      array(
-        array('foo' => '(bar="a",baz="b")'), 'foo',
-        array('bar' => "a", 'baz' => 'b')
-      ),
-      array(
-        array('foo' => '(bar="a",baz="b", bat="x")'), 'foo',
-        array('bar' => "a", 'baz' => 'b', 'bat' => 'x')
+        array('foo' => 'Foo string.'),
+        'foo',
+        'Foo string.'
       ),
       array(
         array('foo' => '(some text in parenthesis)'), 'foo',

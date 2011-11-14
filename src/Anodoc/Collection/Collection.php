@@ -1,6 +1,6 @@
 <?php
 
-namespace Anodoc;
+namespace Anodoc\Collection;
 
 class Collection implements \ArrayAccess, \Countable, \Iterator {
 

@@ -85,7 +85,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
     );
     $this->assertInstanceOf(
       'Anodoc\Tags\GenericTag',
-      $this->parser->parse($doc_comment)->getTag('foo')->get(0)
+      $this->parser->parse($doc_comment)->getTags('foo')->get(0)
     );
   }
 
@@ -94,7 +94,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
    */
   function testParsesTagOutOfDocComments($doc_comment, $tag, $value) {
     $this->assertEquals(
-      $value, $this->parser->parse($doc_comment)->getTag($tag)->get(0)->getValue()
+      $value, $this->parser->parse($doc_comment)->getTags($tag)->get(0)->getValue()
     );
   }
 
@@ -188,7 +188,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
   function testTagsWithMultipleValues($doc_comment, $tag, $values) {
     foreach ($values as $key => $value) {
       $this->assertEquals(
-        $value, $this->parser->parse($doc_comment)->getTag($tag)->get($key)->getValue()
+        $value, $this->parser->parse($doc_comment)->getTags($tag)->get($key)->getValue()
       );
     }
   }
@@ -229,7 +229,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
     $this->parser->registerTag('param', 'Anodoc\Tags\ParamTag');
     $this->assertInstanceOf(
       'Anodoc\Tags\ParamTag',
-      $this->parser->parse($doc_comment)->getTag('param')->get(0)
+      $this->parser->parse($doc_comment)->getTags('param')->get(0)
     );
   }
 
