@@ -54,6 +54,37 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
     );
   }
 
+  function testGettingJustOneTagWithMultipleValuesGetsLastValue() {
+    $tag_collections = new Collection;
+    $tag_collections['foo'] = new TagCollection(
+      'foo',
+      array(
+        new GenericTag('foo', 'Foo 1'),
+        new GenericTag('foo', 'Foo 2')
+      )
+    );
+
+    $doc = new DocComment('', $tag_collections);
+    $this->assertEquals('Foo 2', $doc->getTag('foo'));
+  }
+
+  function testCheckingIfDocCommentHasTagReturnsFalseForUnsetTags() {
+    $doc = new DocComment('', new Collection);
+    $this->assertFalse($doc->hasTag('foo'));
+  }
+
+  function testHasTagReturnsTrueIfTagIsSet() {
+    $tag_collections = new Collection;
+    $tag_collections['foo'] = new TagCollection(
+      'foo',
+      array(
+        new GenericTag('foo', 'bar')
+      )
+    );
+    $doc = new DocComment('', $tag_collections);
+    $this->assertTrue($doc->hasTag('foo'));
+  }
+
   function testGettingShortDescription() {
     $doc = new DocComment('Foo Bar');
     $this->assertEquals('Foo Bar', $doc->getShortDescription());

@@ -37,13 +37,20 @@ class DocComment {
   }
 
   function getTags($tag) {
-    if (isset($this->tags[$tag])) {
+    if ($this->hasTag($tag)) {
       return $this->tags[$tag];
     }
   }
 
   function getTag($tag) {
-    return $this->tags[$tag][0]->getValue();
+    if ($this->hasTag($tag)) {
+      $last = $this->tags[$tag][$this->tags[$tag]->count() -1];
+      return $last->getValue();
+    }
+  }
+
+  function hasTag($tag) {
+    return isset($this->tags[$tag]);
   }
 
   private function parseTags(Collection $tags) {

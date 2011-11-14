@@ -2,7 +2,7 @@
 
 namespace Anodoc\Collection;
 
-class Collection implements \ArrayAccess, \Countable, \Iterator {
+class Collection implements \ArrayAccess, \Countable, \SeekableIterator {
 
   private $store = array();
 
@@ -32,6 +32,13 @@ class Collection implements \ArrayAccess, \Countable, \Iterator {
 
   function offsetUnset($key) {
     unset($this->store[$key]);
+  }
+
+  function seek($position) {
+    if (isset($this->store[$position])) {
+      return $this->store[$position];
+    }
+    throw new \OutOfBoundsException("Invalid seek position ($position)");
   }
 
   function length() {
