@@ -73,4 +73,8 @@ class Collection implements \ArrayAccess, \Countable, \SeekableIterator {
     return key($this->store) !== null;
   }
 
+  function isEmpty() {
+    return empty($this->store);
+  }
+
 }

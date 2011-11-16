@@ -75,7 +75,7 @@ using Anodoc
 ```php
 <?php
 
-// Factry instantiates a new Anodoc object
+// Factory instantiates a new Anodoc object
 // With a Parser
 $anodoc = Anodoc::getNew();
 

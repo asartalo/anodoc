@@ -9,11 +9,16 @@ use Anodoc\Tags\GenericTag;
 
 class DocCommentTest extends \PHPUnit_Framework_TestCase {
 
-  function testAddingAndGettingComments() {
+  function testAddingAndGettingDescription() {
     $doc = new DocComment('This is the description');
     $this->assertEquals(
       'This is the description', $doc->getDescription()
     );
+  }
+
+  function testGettingEmptyDescription() {
+    $doc = new DocComment;
+    $this->assertEquals(null, $doc->getDescription());
   }
 
   /**
@@ -68,7 +73,7 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('Foo 2', $doc->getTagValue('foo'));
   }
 
-  function testGettingATagObject() {
+  function testGettingATagObjectReturnsLastTag() {
     $tag_collections = new Collection;
     $tag_collections['foo'] = new TagCollection(
       'foo',
@@ -80,6 +85,25 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
 
     $doc = new DocComment('', $tag_collections);
     $this->assertEquals(new GenericTag('foo', 'Foo 2'), $doc->getTag('foo'));
+  }
+
+  function testGettingTagsReturnEmptyCollectionWhenThereIsNoTag() {
+    $tag_collections = new Collection;
+    $tag_collections['foo'] = new TagCollection(
+      'foo',
+      array(
+        new GenericTag('foo', 'Foo 1'),
+        new GenericTag('foo', 'Foo 2')
+      )
+    );
+
+    $doc = new DocComment('', $tag_collections);
+    $this->assertTrue($doc->getTags('bar')->isEmpty());
+  }
+
+  function testGettingATagObjectReturnsNullTagByDefault() {
+    $doc = new DocComment;
+    $this->assertInstanceOf('Anodoc\Tags\NullTag', $doc->getTag('foo'));
   }
 
   function testCheckingIfDocCommentHasTagReturnsFalseForUnsetTags() {
@@ -104,6 +128,11 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('Foo Bar', $doc->getShortDescription());
   }
 
+  function testShortDescriptionReturnsNullByDefault() {
+    $doc = new DocComment;
+    $this->assertEquals(null, $doc->getShortDescription());
+  }
+
   function testGettingShortDescriptionFromMultilineDescription()
   {
     $doc = new DocComment(
@@ -120,6 +149,11 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
   function testGettingLongDescriptionFromSingleLineDescriptionReturnsEmpty() {
     $doc = new DocComment('Foo Bar');
     $this->assertEquals('', $doc->getLongDescription());
+  }
+
+  function testGettingLongDescriptionReturnsNullByDefault() {
+    $doc = new DocComment;
+    $this->assertEquals(null, $doc->getLongDescription());
   }
 
   function testGettingLongDescriptionFromMultiLineDescReturnsLinesBeyond() {

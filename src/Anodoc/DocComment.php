@@ -40,12 +40,14 @@ class DocComment {
     if ($this->hasTag($tag)) {
       return $this->tags[$tag];
     }
+    return new TagCollection($tag);
   }
 
   function getTag($tag) {
     if ($this->hasTag($tag)) {
       return $this->tags[$tag][$this->tags[$tag]->count() -1];
     }
+    return new Tags\NullTag('', '');
   }
 
   function getTagValue($tag) {

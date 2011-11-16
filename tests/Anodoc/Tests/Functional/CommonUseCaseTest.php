@@ -60,4 +60,12 @@ class CommonUseCaseTest extends \PHPUnit_Framework_TestCase {
       ->with('foo', 'FooTagClass');
     $anodoc->registerTag('foo', 'FooTagClass');
   }
+
+  function testGettingSourceDirectory() {
+    $this->assertEquals(
+      realpath(__DIR__ . '/../../../../') . '/src',
+      Anodoc::getSourceLocation()
+    );
+  }
+
 }
