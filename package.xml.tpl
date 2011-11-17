@@ -21,8 +21,8 @@ Anodoc is a doc comment / doc block / parser written for PHP
 <date><?php echo $date ?></date>
 <time><?php echo $time ?></time>
 <version>
-  <release>0.1.1</release>
-  <api>0.1.1</api>
+  <release>0.2.0</release>
+  <api>0.2.0<api>
 </version>
 <stability>
 <release>beta</release>

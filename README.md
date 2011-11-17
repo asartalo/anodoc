@@ -64,7 +64,7 @@ echo $doc->getTagValue('param'); // this will return the last defined value
 // boo far
 
 var_dump($doc->getTags('param'));
-// a dump of a TagCollection that has 2 values
+// a dump of a TagGroup that has 2 values
 
 ?>
 ```
