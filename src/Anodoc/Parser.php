@@ -2,8 +2,8 @@
 
 namespace Anodoc;
 
-use Anodoc\Collection\Collection;
-use Anodoc\Collection\TagCollection;
+use Anodoc\Collection\TagGroup;
+use Anodoc\Collection\TagGroupCollection;
 
 class Parser {
 
@@ -39,10 +39,10 @@ class Parser {
 
   private function getTags($lines) {
     $raw_tags = $this->getTagsRaw($lines);
-    $tags = new Collection;
+    $tags = new TagGroupCollection;
     foreach ($raw_tags as $tag_name => $values) {
       if (!$tags->isKeySet($tag_name)) {
-        $tags[$tag_name] = new TagCollection($tag_name);
+        $tags[$tag_name] = new TagGroup($tag_name);
       }
       foreach ($values as $value) {
         if (isset($this->registered_tags[$tag_name])) {

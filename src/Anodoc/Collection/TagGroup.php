@@ -4,7 +4,7 @@ namespace Anodoc\Collection;
 
 use Tags\Tag;
 
-class TagCollection extends Collection {
+class TagGroup extends Collection {
 
   private
     $tag_name,

@@ -3,8 +3,8 @@
 namespace Anodoc\Tests\Unit;
 
 use Anodoc\DocComment;
-use Anodoc\Collection\Collection;
-use Anodoc\Collection\TagCollection;
+use Anodoc\Collection\TagGroupCollection;
+use Anodoc\Collection\TagGroup;
 use Anodoc\Tags\GenericTag;
 
 class DocCommentTest extends \PHPUnit_Framework_TestCase {
@@ -25,9 +25,9 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
    * @dataProvider dataSettingTags
    */
   function testSettingAndGettingTags($tags, $tag, $expected_value) {
-    $tag_collections = new Collection;
+    $tag_collections = new TagGroupCollection;
     foreach ($tags as $tag => $value) {
-      $tag_collections[$tag] = new TagCollection($tag, array(new GenericTag($tag, $value)));
+      $tag_collections[$tag] = new TagGroup($tag, array(new GenericTag($tag, $value)));
     }
     $doc = new DocComment('', $tag_collections);
     $this->assertEquals($expected_value, $doc->getTags($tag)->get(0)->getValue());
@@ -37,9 +37,9 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
    * //@dataProvider dataSettingTags
    */
   function testGettingJustOneTagValue($tags, $tag, $expected_value) {
-    $tag_collections = new Collection;
+    $tag_collections = new TagGroupCollection;
     foreach ($tags as $tag => $value) {
-      $tag_collections[$tag] = new TagCollection($tag, array(new GenericTag($tag, $value)));
+      $tag_collections[$tag] = new TagGroup($tag, array(new GenericTag($tag, $value)));
     }
     $doc = new DocComment('', $tag_collections);
     $this->assertEquals($expected_value, $doc->getTagValue($tag));
@@ -59,45 +59,30 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
     );
   }
 
-  function testGettingJustOneTagWithMultipleValuesGetsLastValue() {
-    $tag_collections = new Collection;
-    $tag_collections['foo'] = new TagCollection(
+  private function getTagGroupForTest() {
+    $tag_collections = new TagGroupCollection;
+    $tag_collections['foo'] = new TagGroup(
       'foo',
       array(
         new GenericTag('foo', 'Foo 1'),
         new GenericTag('foo', 'Foo 2')
       )
     );
+    return $tag_collections;
+  }
 
-    $doc = new DocComment('', $tag_collections);
+  function testGettingJustOneTagWithMultipleValuesGetsLastValue() {
+    $doc = new DocComment('', $this->getTagGroupForTest());
     $this->assertEquals('Foo 2', $doc->getTagValue('foo'));
   }
 
   function testGettingATagObjectReturnsLastTag() {
-    $tag_collections = new Collection;
-    $tag_collections['foo'] = new TagCollection(
-      'foo',
-      array(
-        new GenericTag('foo', 'Foo 1'),
-        new GenericTag('foo', 'Foo 2')
-      )
-    );
-
-    $doc = new DocComment('', $tag_collections);
+    $doc = new DocComment('', $this->getTagGroupForTest());
     $this->assertEquals(new GenericTag('foo', 'Foo 2'), $doc->getTag('foo'));
   }
 
   function testGettingTagsReturnEmptyCollectionWhenThereIsNoTag() {
-    $tag_collections = new Collection;
-    $tag_collections['foo'] = new TagCollection(
-      'foo',
-      array(
-        new GenericTag('foo', 'Foo 1'),
-        new GenericTag('foo', 'Foo 2')
-      )
-    );
-
-    $doc = new DocComment('', $tag_collections);
+    $doc = new DocComment('', $this->getTagGroupForTest());
     $this->assertTrue($doc->getTags('bar')->isEmpty());
   }
 
@@ -107,13 +92,13 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
   }
 
   function testCheckingIfDocCommentHasTagReturnsFalseForUnsetTags() {
-    $doc = new DocComment('', new Collection);
+    $doc = new DocComment('', new TagGroupCollection);
     $this->assertFalse($doc->hasTag('foo'));
   }
 
   function testHasTagReturnsTrueIfTagIsSet() {
-    $tag_collections = new Collection;
-    $tag_collections['foo'] = new TagCollection(
+    $tag_collections = new TagGroupCollection;
+    $tag_collections['foo'] = new TagGroup(
       'foo',
       array(
         new GenericTag('foo', 'bar')

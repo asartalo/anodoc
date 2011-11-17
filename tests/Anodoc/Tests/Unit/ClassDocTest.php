@@ -62,7 +62,7 @@ class ClassDocTest extends \PHPUnit_Framework_TestCase {
     );
   }
 
-  function testGettingAttributeDocForUnknownAttributeReturnsNull() {
+  function testGettingAttributeDocForUnknownAttributeReturnsNullDoc() {
     $this->assertEquals(
       new NullDocComment, $this->docCollection->getAttributeDoc('bar')
     );

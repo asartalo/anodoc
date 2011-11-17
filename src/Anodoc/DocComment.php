@@ -2,19 +2,21 @@
 
 namespace Anodoc;
 
-use Anodoc\Collection\Collection;
-use Anodoc\Collection\TagCollection;
+use Anodoc\Collection\TagGroup;
+use Anodoc\Collection\TagGroupCollection;
 
 class DocComment {
 
   private $description, $tags;
 
-  function __construct($description = '', Collection $tags = null) {
+  function __construct($description = '', TagGroupCollection $tags = null) {
     if (!$tags) {
-      $tags = new Collection;
+      $tags = new TagGroupCollection;
     }
     $this->description = $description;
-    $this->parseTags($tags);
+    foreach ($tags as $tag => $value) {
+      $this->tags[$tag]= $value;
+    }
   }
 
   function getDescription() {
@@ -40,7 +42,7 @@ class DocComment {
     if ($this->hasTag($tag)) {
       return $this->tags[$tag];
     }
-    return new TagCollection($tag);
+    return new TagGroup($tag);
   }
 
   function getTag($tag) {
@@ -59,20 +61,5 @@ class DocComment {
 
   function hasTag($tag) {
     return isset($this->tags[$tag]);
-  }
-
-  private function parseTags(Collection $tags) {
-    foreach ($tags as $tag => $value) {
-      if ($value instanceof TagCollection) {
-        $this->tags[$tag]= $value;
-      } else {
-        if (is_object($value)) {
-          $type = get_class($value);
-        } else {
-          $type = gettype($value);
-        }
-        throw new Exception("Tag '$tag' of type $type is not a TagCollection\n");
-      }
-    }
   }
 }

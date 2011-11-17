@@ -6,7 +6,6 @@ use Anodoc\Collection\Collection;
 
 class CollectionTest extends \PHPUnit_Framework_TestCase {
 
-
   function setUp() {
     $this->collection = new Collection;
   }
@@ -40,7 +39,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals(3, count($this->collection));
   }
 
-  function testCheckingAKeExists() {
+  function testCheckingAKeyExists() {
     $this->collection['foo'] = 'bar';
     $this->assertTrue(isset($this->collection['foo']));
   }
