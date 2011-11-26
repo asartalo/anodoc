@@ -28,7 +28,9 @@ class ClassDocTest extends \PHPUnit_Framework_TestCase {
   }
 
   function testGettingClassDocReturnsDocComment() {
-    $this->assertInstanceOf('Anodoc\DocComment', $this->docCollection->getMainDoc());
+    $this->assertInstanceOf(
+      'Anodoc\DocComment', $this->docCollection->getMainDoc()
+    );
   }
 
   function testGettingClassDocReturnsCorrectDocComment() {

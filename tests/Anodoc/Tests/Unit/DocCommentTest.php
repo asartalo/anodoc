@@ -27,10 +27,14 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
   function testSettingAndGettingTags($tags, $tag, $expected_value) {
     $tag_collections = new TagGroupCollection;
     foreach ($tags as $tag => $value) {
-      $tag_collections[$tag] = new TagGroup($tag, array(new GenericTag($tag, $value)));
+      $tag_collections[$tag] = new TagGroup(
+        $tag, array(new GenericTag($tag, $value))
+      );
     }
     $doc = new DocComment('', $tag_collections);
-    $this->assertEquals($expected_value, $doc->getTags($tag)->get(0)->getValue());
+    $this->assertEquals(
+      $expected_value, $doc->getTags($tag)->get(0)->getValue()
+    );
   }
 
   /**
@@ -39,7 +43,9 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
   function testGettingJustOneTagValue($tags, $tag, $expected_value) {
     $tag_collections = new TagGroupCollection;
     foreach ($tags as $tag => $value) {
-      $tag_collections[$tag] = new TagGroup($tag, array(new GenericTag($tag, $value)));
+      $tag_collections[$tag] = new TagGroup(
+        $tag, array(new GenericTag($tag, $value))
+      );
     }
     $doc = new DocComment('', $tag_collections);
     $this->assertEquals($expected_value, $doc->getTagValue($tag));
@@ -118,8 +124,7 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals(null, $doc->getShortDescription());
   }
 
-  function testGettingShortDescriptionFromMultilineDescription()
-  {
+  function testGettingShortDescriptionFromMultilineDescription() {
     $doc = new DocComment(
       $this->multiline(
         'Foo Bar',

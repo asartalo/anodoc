@@ -31,10 +31,9 @@ class DocComment {
   }
 
   function getLongDescription() {
-    if (
-      $longDescription = preg_replace('/^.+\n/', '', $this->description)
-    ) {
-      return $longDescription != $this->description ? trim($longDescription) : '';
+    if ($longDescription = preg_replace('/^.+\n/', '', $this->description)) {
+      return $longDescription != $this->description ?
+        trim($longDescription) : '';
     }
   }
 

@@ -16,17 +16,22 @@ class Parser {
     return new DocComment(trim($description), $this->getTags($lines));
   }
 
-  public function getLines($doc_comment) {
+  function getLines($doc_comment) {
     return ($lines = preg_split('/\s*\n\s*/', $doc_comment)) ? $lines : array();
   }
 
   private function cleanupLines($str) {
-    return preg_replace(array('/^\/\**/', '/\n[\/\* ]+\**/'), array('', "\n"), $str);
+    return preg_replace(
+      array('/^\/\**/', '/\n[\/\* ]+\**/'), array('', "\n"), $str
+    );
   }
 
   private function getDescription(&$lines) {
     $description = '';
-    while (is_string($line = array_shift($lines)) && !$this->startsWithTag($line)) {
+    while (
+      is_string($line = array_shift($lines))
+      && !$this->startsWithTag($line)
+    ) {
       $description .= "$line\n";
     }
     array_unshift($lines, $line);

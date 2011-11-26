@@ -40,7 +40,9 @@ class ClassDoc {
     if ($docComment instanceof DocComment) {
       $this->attributeDocs[$attribute] = $docComment;
     } else {
-      throw new InvalidAttributeDoc("'$attribute' is not a valid attribute doc.");
+      throw new InvalidAttributeDoc(
+        "'$attribute' is not a valid attribute doc."
+      );
     }
   }
 

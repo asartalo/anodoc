@@ -46,8 +46,6 @@ class ClassDocSample {
    * @param array $arg2 An array argument
    * @return void
    */
-  function publicMethod($var1, $var2) {
-
-  }
+  function publicMethod($var1, $var2) {}
 
 }

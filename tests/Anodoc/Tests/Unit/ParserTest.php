@@ -94,7 +94,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
    */
   function testParsesTagOutOfDocComments($doc_comment, $tag, $value) {
     $this->assertEquals(
-      $value, $this->parser->parse($doc_comment)->getTags($tag)->get(0)->getValue()
+      $value,
+      $this->parser->parse($doc_comment)->getTags($tag)->get(0)->getValue()
     );
   }
 
@@ -188,7 +189,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
   function testTagsWithMultipleValues($doc_comment, $tag, $values) {
     foreach ($values as $key => $value) {
       $this->assertEquals(
-        $value, $this->parser->parse($doc_comment)->getTags($tag)->get($key)->getValue()
+        $value,
+        $this->parser->parse($doc_comment)->getTags($tag)->get($key)->getValue()
       );
     }
   }
@@ -214,7 +216,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
           ' * @foo yet another',
           ' */'
         ),
-        'foo', array('some value', "another value\nbut it is multiline", 'yet another')
+        'foo',
+        array(
+          'some value', "another value\nbut it is multiline", 'yet another'
+        )
       ),
     );
   }
@@ -225,7 +230,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
       ' * @foo Foo Bar',
       ' * @param string $varname the description',
       ' */'
-      );
+    );
     $this->parser->registerTag('param', 'Anodoc\Tags\ParamTag');
     $this->assertInstanceOf(
       'Anodoc\Tags\ParamTag',
