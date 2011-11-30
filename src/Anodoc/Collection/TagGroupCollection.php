@@ -7,10 +7,6 @@ use Anodoc\Collection\TagGroup;
 
 class TagGroupCollection extends Collection {
 
-  private
-    $tag_name,
-    $store = array();
-
   function __construct($array = array()) {
     foreach ($array as $key => $value) {
       $this->offsetSet($key, $value);

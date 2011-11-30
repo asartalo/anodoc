@@ -6,9 +6,7 @@ use Tags\Tag;
 
 class TagGroup extends Collection {
 
-  private
-    $tag_name,
-    $store = array();
+  private $tag_name;
 
   function __construct($tag_name, $array = array()) {
     $this->tag_name = $tag_name;
