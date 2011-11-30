@@ -65,6 +65,11 @@ class DocCommentTest extends \PHPUnit_Framework_TestCase {
     );
   }
 
+  function testGettingAnUnknownTagsValueReturnsNothing() {
+    $doc = new DocComment('');
+    $this->assertEquals('', $doc->getTagValue('foo'));
+  }
+
   private function getTagGroupForTest() {
     $tag_collections = new TagGroupCollection;
     $tag_collections['foo'] = new TagGroup(

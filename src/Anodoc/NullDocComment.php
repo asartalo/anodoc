@@ -1,6 +1,7 @@
 <?php
 
 namespace Anodoc;
+use Anodoc\Collection\TagGroup;
 
 class NullDocComment extends DocComment {
 
@@ -13,7 +14,5 @@ class NullDocComment extends DocComment {
   function getShortDescription() {}
 
   function getLongDescription() {}
-
-  function getTag($tag) {}
 
 }

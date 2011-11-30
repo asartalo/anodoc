@@ -11,4 +11,9 @@ class TagGroupTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals('foo', $collection->getTagname());
   }
 
+  function testSettingANonTagThrowsException() {
+    $this->setExpectedException('Anodoc\Collection\NotATagException');
+    $collection = new TagGroup('foo', array('bar' => ''));
+  }
+
 }
