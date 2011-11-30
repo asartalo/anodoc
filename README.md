@@ -147,7 +147,7 @@ yourself to be useful.
 <?php
 
 $anodoc = Anodoc::getNew();
-$anodoc->register('param', 'Anodoc\Tags\ParamTag');
+$anodoc->registerTag('param', 'Anodoc\Tags\ParamTag');
 $classDoc = $anodoc->getDoc('FooClass');
 
 $classDoc->getMethodDoc('fooMethod')->getTag('param');
