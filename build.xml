@@ -18,6 +18,12 @@
   <mkdir dir="${basedir}/build/pdepend"/>
  </target>
 
+ <target name="composer" description="Update dependencies using composer">
+  <exec executable="composer.phar" failonerror="true">
+    <arg line="update" />
+  </exec>
+ </target>
+
  <target name="phpunit" description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
   <exec executable="phpunit" failonerror="true">
     <arg line="--configuration=build.phpunit.xml" />
@@ -90,5 +96,5 @@
   </exec>
  </target>
 
- <target name="build" depends="clean,parallelTasks,phpunit,phpcb"/>
+ <target name="build" depends="clean,composer,parallelTasks,phpunit,phpcb"/>
 </project>

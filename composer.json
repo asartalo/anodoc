@@ -1,0 +1,22 @@
+{
+    "name": "asar/anodoc",
+    "type": "library",
+    "description": "A lightweight doc comment/block parser.",
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "authors" : [
+        {
+            "name": "Wayne Duran",
+            "email": "asartalo@projectweb.ph",
+            "role": "Developer",
+            "homepage": "http://www.asartalo.org"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Anodoc\\Tests": "tests",
+            "Anodoc": "src"
+        }
+    }
+}
