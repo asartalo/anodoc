@@ -20,7 +20,7 @@ PHP. Doc comments are usually written in the style
 ```
 
 and are created to document source code. Anodoc parses these
-comments as where you can access, the description, the short
+comments so you can access, the description, the short
 description, the long description, and the tags.
 
 
@@ -150,8 +150,17 @@ $anodoc = Anodoc::getNew();
 $anodoc->registerTag('param', 'Anodoc\Tags\ParamTag');
 $classDoc = $anodoc->getDoc('FooClass');
 
-$classDoc->getMethodDoc('fooMethod')->getTag('param');
+$param = $classDoc->getMethodDoc('fooMethod')->getTag('param');
 // returns an 'Anodoc\Tags\ParamTag' object
+
+$param->getValue();
+// if the param tag looks like this:
+//     @param string $firstName the first name of the person
+// The value would be:
+// array(
+//     'type' => 'string', 'name' => 'firstName',
+//     'description' => 'the first name of the person'
+// )
 
 ?>
 ```
