@@ -20,7 +20,7 @@ PHP. Doc comments are usually written in the style
 ```
 
 and are created to document source code. Anodoc parses these
-comments so you can access, the description, the short
+comments so you can access the description, the short
 description, the long description, and the tags.
 
 
